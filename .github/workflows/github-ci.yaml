@@ -9,4 +9,7 @@ jobs:
     steps:
       - run: echo "vars.ENV ${{ vars.ENV }}"
       - run: |
-          echo "${{ toJSON(vars) }}"
+          touch .env
+          echo "${{ toJSON(vars) }}" > vars.json
+          jq -r 'to_entries | .[] | "\(.key)=\(.value)"' vars.json >> .env
+          cat .env
