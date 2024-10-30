@@ -5,5 +5,5 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "var.ENV ${{ var.ENV }}"
+      - run: echo "vars.ENV ${{ vars.ENV }}"
       - run: echo "env.ENV ${{ env.ENV }}"
