@@ -8,4 +8,9 @@ jobs:
       name: production
     steps:
       - run: echo "vars.ENV ${{ vars.ENV }}"
-      - run: echo "env.ENV ${{ env.ENV }}"
+      - run: |
+          touch .env
+          for var_name in $(printenv | grep -o 'vars\.[A-Z_]*'); do
+          value="${{ vars[${var_name#vars.}] }}"
+          echo "${var_name#vars.}=$value" >> .env
+          done
