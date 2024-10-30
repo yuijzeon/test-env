@@ -1,13 +1,11 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
+
 jobs:
-  Explore-GitHub-Actions:
+  create-env-file:
     runs-on: ubuntu-latest
     environment:
       name: production
     steps:
-      - run: echo "vars.ENV ${{ vars.ENV }}"
       - run: |
           touch .env
           printf '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> .env
