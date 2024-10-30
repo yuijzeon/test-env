@@ -9,5 +9,5 @@ jobs:
     steps:
       - run: echo "vars.ENV ${{ vars.ENV }}"
       - run: |
-          printf '%s\n' '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > .env
+          printf '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > .env
           cat .env
