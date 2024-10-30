@@ -10,6 +10,6 @@ jobs:
       - run: echo "vars.ENV ${{ vars.ENV }}"
       - run: |
           touch .env
-          printf '${{ toJSON(secrets) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> .env
           printf '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> .env
+          printf '${{ toJSON(secrets) }}' | jq -r 'to_entries | .[] | select(.key | test("^github_") | not) | "\(.key)=\(.value)"' >> .env
           cat .env
