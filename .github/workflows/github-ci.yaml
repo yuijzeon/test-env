@@ -4,6 +4,8 @@ on: [push]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    environment:
+      name: dev
     steps:
       - run: echo "vars.ENV ${{ vars.ENV }}"
       - run: echo "env.ENV ${{ env.ENV }}"
