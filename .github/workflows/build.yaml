@@ -1,0 +1,41 @@
+name: Build and Deploy to Dev
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: false
+        default: 'develop'
+      github_sha:
+        description: 'Specific commit SHA to deploy'
+        required: false
+        default: ''
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.inputs.branch
+    steps:
+      - name: Determine checkout ref
+        id: determine_ref
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+              echo "CHECKOUT_REF=${{ github.ref }}" >> "$GITHUB_OUTPUT"
+          elif [ -z "${{ github.event.inputs.github_sha }}" ]; then
+              echo "CHECKOUT_REF=${{ github.event.inputs.branch }}" >> "$GITHUB_OUTPUT"
+          else
+              echo "CHECKOUT_REF=${{ github.event.inputs.github_sha }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.determine_ref.outputs.CHECKOUT_REF }}
+
+      - name: Show the commit hash
+        run: |
+          echo $(git rev-parse HEAD)
