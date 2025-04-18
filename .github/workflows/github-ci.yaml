@@ -1,4 +1,5 @@
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   create-env-file:
@@ -7,7 +8,7 @@ jobs:
       name: production
     steps:
       - run: |
-          touch .env
+          > .env
           printf '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' >> .env
           printf '${{ toJSON(secrets) }}' | jq -r 'to_entries | .[] | select(.key | test("^github_") | not) | "\(.key)=\(.value)"' >> .env
           cat .env
