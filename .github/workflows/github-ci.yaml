@@ -9,6 +9,6 @@ jobs:
     steps:
       - run: |
           > .env
-          printf '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value | gsub("\"; "\\"))"' >> .env
-          printf '${{ toJSON(secrets) }}' | jq -r 'to_entries | .[] | select(.key | test("^github_") | not) | "\(.key)=\(.value | gsub("\"; "\\"))"' >> .env
+          printf '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value | gsub("\\"; "\\\\"))"' >> .env
+          printf '${{ toJSON(secrets) }}' | jq -r 'to_entries | .[] | select(.key | test("^github_") | not) | "\(.key)=\(.value | gsub("\\"; "\\\\"))"' >> .env
           cat .env
